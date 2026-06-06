@@ -5,7 +5,8 @@ from PIL import Image, UnidentifiedImageError
 
 from src.schemas.errors import ApiErrorCode
 
-ALLOWED_SIZES = {(16, 16), (32, 32), (64, 64)}
+MIN_PIXEL_SIZE = 1
+MAX_PIXEL_SIZE = 64
 MAX_IMAGE_BYTES = 1024 * 1024
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 
@@ -17,7 +18,9 @@ class ImageValidationError(ValueError):
         self.message = message
 
 
-async def load_pixel_image(upload: UploadFile | None) -> Image.Image:
+async def load_pixel_image(upload: UploadFile | None, pixel_size: int) -> Image.Image:
+    _validate_pixel_size(pixel_size)
+
     if upload is None:
         raise ImageValidationError("missing_image", "PNG 画像を選択してください")
 
@@ -38,13 +41,19 @@ async def load_pixel_image(upload: UploadFile | None) -> Image.Image:
     except (UnidentifiedImageError, OSError):
         raise ImageValidationError("image_decode_failed", "画像を読み込めませんでした")
 
-    if image.size not in ALLOWED_SIZES:
-        raise ImageValidationError(
-            "invalid_image_size",
-            "画像サイズは 16x16, 32x32, 64x64 のみ対応しています",
-        )
+    flattened = _flatten_transparency(image)
+    if flattened.size == (pixel_size, pixel_size):
+        return flattened
 
-    return _flatten_transparency(image)
+    return flattened.resize((pixel_size, pixel_size), Image.Resampling.NEAREST)
+
+
+def _validate_pixel_size(pixel_size: int) -> None:
+    if pixel_size < MIN_PIXEL_SIZE or pixel_size > MAX_PIXEL_SIZE:
+        raise ImageValidationError(
+            "invalid_pixel_size",
+            f"一辺のピクセル数は {MIN_PIXEL_SIZE}〜{MAX_PIXEL_SIZE} の整数で入力してください",
+        )
 
 
 def _flatten_transparency(image: Image.Image) -> Image.Image:

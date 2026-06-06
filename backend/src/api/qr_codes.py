@@ -12,11 +12,12 @@ router = APIRouter()
 @router.post("/qr-codes")
 async def create_qr_code(
     url: str = Form(default=""),
+    pixel_size: int = Form(default=32),
     image: UploadFile | None = File(default=None),
 ) -> Response:
     try:
         validated_url = validate_url(url)
-        pixel_image = await load_pixel_image(image)
+        pixel_image = await load_pixel_image(image, pixel_size)
         png_bytes = generate_pixel_qr_png(validated_url, pixel_image)
     except UrlValidationError as error:
         return _error_response(error.code, error.message, 400)

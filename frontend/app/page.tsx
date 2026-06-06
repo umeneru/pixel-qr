@@ -14,7 +14,7 @@ export default function Home() {
             </h1>
           </div>
           <p className="max-w-md text-sm leading-6 text-[#5d574f]">
-            URL と 16x16、32x32、64x64 の PNG を選ぶだけで、1024px の PNG を生成します。
+            URL、PNG、一辺のピクセル数を指定して、ドット感を保った QR コード PNG を生成します。
           </p>
         </header>
         <PixelQrForm />

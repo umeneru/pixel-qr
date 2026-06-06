@@ -168,7 +168,8 @@ backend/
 - `src/services/image_validator.py`
   - PNG 形式チェック
   - 画像読み込み
-  - サイズチェック
+  - 一辺のピクセル数チェック
+  - 最近傍による正方形リサイズ
   - 透明部分の白背景合成
 - `src/services/qr_generator.py`
   - QR コード生成
@@ -229,6 +230,7 @@ Content-Type: multipart/form-data
 
 ```text
 url: string
+pixel_size: integer
 image: file
 ```
 
@@ -247,8 +249,8 @@ Content-Type: image/png
 
 ```json
 {
-  "code": "invalid_image_size",
-  "message": "画像サイズは 16x16, 32x32, 64x64 のみ対応しています"
+  "code": "invalid_pixel_size",
+  "message": "一辺のピクセル数は 1〜64 の整数で入力してください"
 }
 ```
 
@@ -259,7 +261,7 @@ missing_url
 missing_image
 invalid_url
 invalid_image_type
-invalid_image_size
+invalid_pixel_size
 image_decode_failed
 qr_generation_failed
 ```
@@ -272,7 +274,7 @@ HTTP ステータス:
 - missing_image
 - invalid_url
 - invalid_image_type
-- invalid_image_size
+- invalid_pixel_size
 - image_decode_failed
 
 500 Internal Server Error
@@ -286,7 +288,7 @@ HTTP ステータス:
 ```text
 output_size: 1024x1024
 error_correction: H
-input_image_size: 16x16, 32x32, 64x64
+pixel_size: 1〜64
 embedded_image_max_ratio: 20%
 transparent_pixels: 白背景として扱う
 ```
@@ -295,7 +297,8 @@ transparent_pixels: 白背景として扱う
 
 - 生成する QR コード PNG は `1024x1024px` 固定とする
 - QR コードの誤り訂正レベルは `H` 固定とする
-- アップロード画像は PNG の `16x16`, `32x32`, `64x64` のみ受け付ける
+- アップロード画像は指定された `pixel_size x pixel_size` へ最近傍でリサイズする
+- リサイズは画像全体を対象とし、切り取りは行わない
 - ドット絵は QR コード中央に配置する
 - ドット絵の表示サイズは QR 全体の最大 `20%` とする
 - ドット絵の拡大には nearest neighbor を使い、ピクセル感を保つ
@@ -322,7 +325,7 @@ transparent_pixels: 白背景として扱う
 - 最大ファイルサイズ `1MB`
 - Content-Type は `image/png` のみ
 - Pillow で正常に読み込めること
-- 画像サイズは `16x16`, `32x32`, `64x64` のみ
+- 一辺のピクセル数は `1`〜`64` の整数のみ
 
 フロントエンドでも、ファイル必須と PNG 形式の軽い事前チェックを行う。
 

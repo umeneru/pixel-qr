@@ -7,7 +7,7 @@ ApiErrorCode = Literal[
     "missing_image",
     "invalid_url",
     "invalid_image_type",
-    "invalid_image_size",
+    "invalid_pixel_size",
     "image_decode_failed",
     "qr_generation_failed",
 ]

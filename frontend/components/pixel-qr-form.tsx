@@ -14,6 +14,7 @@ type SelectedImage = {
 
 export function PixelQrForm() {
   const [url, setUrl] = useState("");
+  const [pixelSize, setPixelSize] = useState(32);
   const [selectedImage, setSelectedImage] = useState<SelectedImage | null>(null);
   const [inputErrors, setInputErrors] = useState<string[]>([]);
   const [apiError, setApiError] = useState<ApiError | null>(null);
@@ -74,7 +75,7 @@ export function PixelQrForm() {
     setApiError(null);
     setQrBlob(null);
 
-    const errors = validateClientInputs(url, selectedImage?.file ?? null);
+    const errors = validateClientInputs(url, selectedImage?.file ?? null, pixelSize);
     setInputErrors(errors);
     if (errors.length > 0 || !selectedImage) {
       return;
@@ -82,7 +83,7 @@ export function PixelQrForm() {
 
     setIsGenerating(true);
     try {
-      const blob = await createPixelQr({ url, image: selectedImage.file });
+      const blob = await createPixelQr({ url, image: selectedImage.file, pixelSize });
       setQrBlob(blob);
     } catch (error) {
       setApiError(error as ApiError);
@@ -146,6 +147,28 @@ export function PixelQrForm() {
             </div>
             <p className="text-sm leading-6 text-[#5d574f]">{imageSummary}</p>
           </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <label htmlFor="pixel-size" className="text-sm font-semibold text-[#2b2925]">
+            一辺のピクセル数
+          </label>
+          <input
+            id="pixel-size"
+            type="number"
+            min={1}
+            max={64}
+            step={1}
+            value={Number.isNaN(pixelSize) ? "" : pixelSize}
+            onChange={(event) => {
+              setPixelSize(event.target.valueAsNumber);
+              setQrBlob(null);
+            }}
+            className="min-h-12 border border-[#bfb5a6] px-3 outline-none transition focus:border-[#2d6a63] focus:ring-2 focus:ring-[#2d6a63]/20"
+          />
+          <p className="text-sm leading-6 text-[#5d574f]">
+            アップロード画像全体を指定サイズに最近傍でリサイズします。
+          </p>
         </div>
 
         {(inputErrors.length > 0 || apiError) && (

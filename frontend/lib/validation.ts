@@ -1,4 +1,7 @@
-export function validateClientInputs(url: string, image: File | null): string[] {
+const MIN_PIXEL_SIZE = 1;
+const MAX_PIXEL_SIZE = 64;
+
+export function validateClientInputs(url: string, image: File | null, pixelSize: number): string[] {
   const errors: string[] = [];
   const trimmedUrl = url.trim();
 
@@ -14,6 +17,10 @@ export function validateClientInputs(url: string, image: File | null): string[] 
     errors.push("PNG 画像のみ対応しています");
   } else if (image.size > 1024 * 1024) {
     errors.push("画像サイズは 1MB 以下にしてください");
+  }
+
+  if (!Number.isInteger(pixelSize) || pixelSize < MIN_PIXEL_SIZE || pixelSize > MAX_PIXEL_SIZE) {
+    errors.push(`一辺のピクセル数は ${MIN_PIXEL_SIZE}〜${MAX_PIXEL_SIZE} の整数で入力してください`);
   }
 
   return errors;

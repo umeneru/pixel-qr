@@ -6,16 +6,16 @@ export type ApiError = {
 type CreatePixelQrParams = {
   url: string;
   image: File;
+  pixelSize: number;
 };
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:9000";
-
-export async function createPixelQr({ url, image }: CreatePixelQrParams): Promise<Blob> {
+export async function createPixelQr({ url, image, pixelSize }: CreatePixelQrParams): Promise<Blob> {
   const formData = new FormData();
   formData.append("url", url);
+  formData.append("pixel_size", String(pixelSize));
   formData.append("image", image);
 
-  const response = await fetch(`${API_BASE_URL}/qr-codes`, {
+  const response = await fetch("/api/qr-codes", {
     method: "POST",
     body: formData,
   });
