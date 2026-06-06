@@ -1,0 +1,63 @@
+version: "3"
+
+tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+
+  install:
+    desc: Install frontend and backend dependencies
+    deps:
+      - backend:install
+      - frontend:install
+
+  dev:
+    desc: Run frontend and backend development servers
+    deps:
+      - backend:dev
+      - frontend:dev
+
+  check:
+    desc: Run backend tests and frontend checks
+    deps:
+      - backend:test
+      - frontend:check
+
+  backend:install:
+    desc: Install backend dependencies
+    dir: backend
+    cmds:
+      - uv sync
+
+  backend:dev:
+    desc: Run FastAPI on port 9000
+    dir: backend
+    cmds:
+      - uv run uvicorn src.main:app --reload --host 0.0.0.0 --port 9000
+
+  backend:test:
+    desc: Run backend tests
+    dir: backend
+    cmds:
+      - uv run pytest
+
+  frontend:install:
+    desc: Install frontend dependencies
+    dir: frontend
+    cmds:
+      - npm install
+
+  frontend:dev:
+    desc: Run Next.js on port 4000
+    dir: frontend
+    cmds:
+      - NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL:-http://localhost:9000} npm run dev -- -p 4000 -H 0.0.0.0
+
+  frontend:check:
+    desc: Run frontend lint, typecheck, and build
+    dir: frontend
+    cmds:
+      - npm run lint
+      - npm run typecheck
+      - npm run build
