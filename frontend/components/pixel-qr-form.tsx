@@ -44,10 +44,12 @@ export function PixelQrForm() {
 
   const imageSummary = useMemo(() => {
     if (!selectedImage) {
-      return "PNG 画像が未選択です";
+      return "ここにドラッグ＆ドロップ";
     }
     return `${selectedImage.file.name} / ${(selectedImage.file.size / 1024).toFixed(1)} KB`;
   }, [selectedImage]);
+
+  const pixelSizeIsValid = Number.isInteger(pixelSize) && pixelSize >= 1 && pixelSize <= 64;
 
   function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0] ?? null;
@@ -99,14 +101,14 @@ export function PixelQrForm() {
   }
 
   return (
-    <section className="grid flex-1 gap-3 py-3 lg:grid-cols-[minmax(0,0.9fr)_minmax(320px,1fr)]">
+    <section className="grid flex-1 gap-4 rounded-xl border border-[#e5e8f1] bg-white/70 p-2 shadow-[0_18px_50px_rgba(31,36,67,0.08)] lg:grid-cols-[minmax(360px,0.83fr)_minmax(440px,1.17fr)]">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-2 border border-[#e5e5e5] bg-white p-3 shadow-sm sm:p-4"
+        className="flex flex-col gap-5 rounded-lg border border-[#e6e8f2] bg-white p-6 shadow-[0_10px_30px_rgba(74,85,130,0.07)]"
       >
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="url" className="text-xs font-semibold text-[#111111]">
-            URL
+        <div className="space-y-3 border-b border-[#e7e9f2] pb-5">
+          <label htmlFor="url" className="flex items-center gap-2 text-xl font-black text-[#5948dd]">
+            1. URLを入力
           </label>
           <input
             id="url"
@@ -117,62 +119,83 @@ export function PixelQrForm() {
               setQrBlob(null);
             }}
             placeholder="https://example.com"
-            className="min-h-10 border border-[#d4d4d4] px-2.5 text-sm outline-none transition focus:border-[#111111] focus:ring-2 focus:ring-[#111111]/10"
+            className="min-h-12 w-full rounded-md border border-[#d7dbe8] bg-white px-4 text-base text-[#171827] shadow-inner outline-none transition focus:border-[#6655f1] focus:ring-4 focus:ring-[#6655f1]/15"
           />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label htmlFor="image" className="text-xs font-semibold text-[#111111]">
-            ドット絵 PNG
-          </label>
-          <input
-            id="image"
-            type="file"
-            accept="image/png"
-            onChange={handleImageChange}
-            className="block w-full cursor-pointer border border-dashed border-[#d4d4d4] bg-white p-3 text-xs file:mr-3 file:border-0 file:bg-[#111111] file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white"
-          />
-          <div className="grid grid-cols-[72px_1fr] items-center gap-2">
-            <div className="grid aspect-square w-[72px] place-items-center border border-[#e5e5e5] bg-white">
-              {selectedImage ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={selectedImage.previewUrl}
-                  alt=""
-                  className="pixelated max-h-full max-w-full"
-                />
-              ) : (
-                <span className="text-xs text-[#737373]">PNG</span>
-              )}
-            </div>
-            <p className="text-xs leading-5 text-[#525252]">{imageSummary}</p>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="pixel-size" className="text-xs font-semibold text-[#111111]">
-            一辺のピクセル数
-          </label>
-          <input
-            id="pixel-size"
-            type="number"
-            min={1}
-            max={64}
-            step={1}
-            value={Number.isNaN(pixelSize) ? "" : pixelSize}
-            onChange={(event) => {
-              setPixelSize(event.target.valueAsNumber);
-              setQrBlob(null);
-            }}
-            className="min-h-10 border border-[#d4d4d4] px-2.5 text-sm outline-none transition focus:border-[#111111] focus:ring-2 focus:ring-[#111111]/10"
-          />
-          <p className="text-xs leading-5 text-[#525252]">
-            アップロード画像全体を指定サイズに最近傍でリサイズします。
+          <p className="text-sm font-semibold leading-6 text-[#70778d]">
+            http:// または https:// から始まるURLを入力してください
           </p>
         </div>
 
+        <div className="space-y-4 border-b border-[#e7e9f2] pb-5">
+          <h2 className="flex items-center gap-2 text-xl font-black text-[#5948dd]">
+            2. ドット絵画像をアップロード
+          </h2>
+
+          <div className="grid gap-5 md:grid-cols-[1fr_200px] md:items-start">
+            <label
+              htmlFor="image"
+              className="grid min-h-[152px] cursor-pointer place-items-center rounded-md border border-dashed border-[#8d7dff] bg-[#fbfaff] px-6 py-5 text-center transition hover:border-[#5f4df2] hover:bg-[#f6f3ff]"
+            >
+              <input
+                id="image"
+                type="file"
+                accept="image/png"
+                onChange={handleImageChange}
+                className="sr-only"
+              />
+              <span className="flex flex-col items-center gap-2">
+                <span className="text-lg font-black text-[#5a49df]">PNG画像を選択</span>
+                <span className="text-sm font-semibold text-[#666d84]">{imageSummary}</span>
+                <span className="mt-1 grid size-10 place-items-center text-4xl text-[#6554ef]" aria-hidden="true">
+                  ◰
+                </span>
+                <span className="rounded-md bg-[#6250e8] px-5 py-2 text-sm font-black text-white shadow-[0_8px_18px_rgba(98,80,232,0.24)]">
+                  ファイルを選択
+                </span>
+              </span>
+            </label>
+
+            <div className="space-y-2">
+              <label htmlFor="pixel-size" className="block text-sm font-black text-[#62687b]">
+                一辺のピクセル数
+              </label>
+              <input
+                id="pixel-size"
+                type="number"
+                min={1}
+                max={64}
+                step={1}
+                value={Number.isNaN(pixelSize) ? "" : pixelSize}
+                onChange={(event) => {
+                  setPixelSize(event.target.valueAsNumber);
+                  setQrBlob(null);
+                }}
+                className="min-h-12 w-full rounded-md border border-[#d7dbe8] bg-white px-4 text-base text-[#171827] outline-none transition focus:border-[#6655f1] focus:ring-4 focus:ring-[#6655f1]/15"
+              />
+              <p className="text-sm font-semibold leading-6 text-[#70778d]">1 〜 64 の整数</p>
+              <p className={pixelSizeIsValid ? "text-sm font-black text-[#18a957]" : "text-sm font-black text-[#d24545]"}>
+                {pixelSizeIsValid ? "◎ 有効な値です" : "1〜64の整数を入力してください"}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-3 border-b border-[#e7e9f2] pb-5">
+          <p className="text-sm font-black text-[#62687b]">
+            リサイズ後のプレビュー（{Number.isNaN(pixelSize) ? "--" : pixelSize}×{Number.isNaN(pixelSize) ? "--" : pixelSize}px）
+          </p>
+          <div className="grid size-28 place-items-center rounded-md border border-[#edf0f6] bg-white shadow-sm">
+            {selectedImage ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={selectedImage.previewUrl} alt="" className="pixelated max-h-full max-w-full p-2" />
+            ) : (
+              <span className="text-sm font-black text-[#9aa1b5]">PNG</span>
+            )}
+          </div>
+        </div>
+
         {(inputErrors.length > 0 || apiError) && (
-          <div className="border border-[#fdba74] bg-[#fff7ed] p-2 text-xs leading-5 text-[#9a3412]">
+          <div className="rounded-md border border-[#f6b55f] bg-[#fff8ed] p-3 text-sm font-semibold leading-6 text-[#9a5a11]">
             {inputErrors.map((error) => (
               <p key={error}>{error}</p>
             ))}
@@ -183,17 +206,19 @@ export function PixelQrForm() {
         <button
           type="submit"
           disabled={isGenerating}
-          className="min-h-10 bg-[#111111] px-4 text-sm font-semibold text-white transition hover:bg-[#333333] disabled:cursor-not-allowed disabled:bg-[#c7c7c7]"
+          className="min-h-16 rounded-md bg-[#624de7] px-5 text-xl font-black text-white shadow-[0_12px_25px_rgba(98,77,231,0.24)] transition hover:bg-[#5140d4] disabled:cursor-not-allowed disabled:bg-[#b8bdd0]"
         >
-          {isGenerating ? "生成中..." : "QR コードを生成"}
+          {isGenerating ? "生成中..." : "▦ 3. QRコードを生成"}
         </button>
+
+        <div className="rounded-lg border border-[#dfe7f5] bg-[#fbfdff] p-4 text-sm font-semibold leading-7 text-[#6b7286]">
+          <p className="font-black text-[#4976dc]">ⓘ ご注意</p>
+          <p>・QRコードの読み取りやすさを確保するため、ドット絵の表示サイズは制限されています。</p>
+          <p>・誤り訂正レベルは「H（高）」で生成します。</p>
+        </div>
       </form>
 
-      <QrPreview
-        previewUrl={qrPreviewUrl}
-        isGenerating={isGenerating}
-        onDownload={handleDownload}
-      />
+      <QrPreview previewUrl={qrPreviewUrl} isGenerating={isGenerating} onDownload={handleDownload} />
     </section>
   );
 }

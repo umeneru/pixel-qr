@@ -6,6 +6,12 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Solid Linker";
+  src: url("/fonts/x12y16pxSolidLinker.ttf") format("truetype");
+  font-display: swap;
+}
+
 :root {
   color-scheme: light;
 }
@@ -14,10 +20,17 @@
   box-sizing: border-box;
 }
 
+html {
+  min-width: 320px;
+}
+
 body {
   margin: 0;
-  background: #ffffff;
-  color: #111111;
+  background:
+    radial-gradient(circle at 18% 8%, rgba(104, 83, 238, 0.08), transparent 28rem),
+    radial-gradient(circle at 88% 12%, rgba(54, 118, 220, 0.07), transparent 30rem),
+    #fbfbff;
+  color: #161827;
   font-family: "BestTen CRT", Arial, Helvetica, sans-serif;
 }
 
@@ -26,6 +39,15 @@ input {
   font: inherit;
 }
 
+button {
+  letter-spacing: 0;
+}
+
 img.pixelated {
   image-rendering: pixelated;
 }
+
+.pixel-title {
+  font-family: "Solid Linker", "BestTen CRT", Arial, Helvetica, sans-serif;
+}
+
