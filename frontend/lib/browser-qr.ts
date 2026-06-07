@@ -6,11 +6,21 @@ const MAX_QR_VERSION = 40;
 const QR_BASE_MODULES = 21;
 const QR_MODULES_PER_VERSION = 4;
 const QR_BORDER_MODULES = 4;
+const PREVIEW_SCALE = 20;
+
+export type TransparencyMode = "preserve" | "white";
 
 type BrowserQrParams = {
   url: string;
   image: File;
   pixelSize: number;
+  transparencyMode: TransparencyMode;
+};
+
+type PixelImageParams = {
+  image: File;
+  pixelSize: number;
+  transparencyMode: TransparencyMode;
 };
 
 export type BrowserQrError = {
@@ -22,9 +32,10 @@ export async function createPixelQrInBrowser({
   url,
   image,
   pixelSize,
+  transparencyMode,
 }: BrowserQrParams): Promise<Blob> {
   try {
-    const pixelImage = await loadPixelImage(image, pixelSize);
+    const pixelImage = await createPixelImageCanvas({ image, pixelSize, transparencyMode });
     const qr = QRCode.create(url.trim(), {
       version: minimumSafeQrVersion(pixelSize),
       errorCorrectionLevel: "H",
@@ -70,8 +81,29 @@ export async function createPixelQrInBrowser({
   }
 }
 
-async function loadPixelImage(file: File, pixelSize: number): Promise<HTMLCanvasElement> {
-  const bitmap = await createImageBitmap(file);
+export async function createPixelImagePreviewUrl(params: PixelImageParams): Promise<string> {
+  const pixelCanvas = await createPixelImageCanvas(params);
+  const previewCanvas = document.createElement("canvas");
+  previewCanvas.width = params.pixelSize * PREVIEW_SCALE;
+  previewCanvas.height = params.pixelSize * PREVIEW_SCALE;
+
+  const context = previewCanvas.getContext("2d");
+  if (!context) {
+    throw new Error("Canvas is not available");
+  }
+
+  context.imageSmoothingEnabled = false;
+  context.drawImage(pixelCanvas, 0, 0, previewCanvas.width, previewCanvas.height);
+
+  return previewCanvas.toDataURL("image/png");
+}
+
+async function createPixelImageCanvas({
+  image,
+  pixelSize,
+  transparencyMode,
+}: PixelImageParams): Promise<HTMLCanvasElement> {
+  const bitmap = await createImageBitmap(image);
   const canvas = document.createElement("canvas");
   canvas.width = pixelSize;
   canvas.height = pixelSize;
@@ -83,9 +115,19 @@ async function loadPixelImage(file: File, pixelSize: number): Promise<HTMLCanvas
   }
 
   context.imageSmoothingEnabled = false;
-  context.fillStyle = "#ffffff";
-  context.fillRect(0, 0, pixelSize, pixelSize);
-  context.drawImage(bitmap, 0, 0, pixelSize, pixelSize);
+
+  if (transparencyMode === "white") {
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, pixelSize, pixelSize);
+  } else {
+    context.clearRect(0, 0, pixelSize, pixelSize);
+  }
+
+  const sourceSize = Math.min(bitmap.width, bitmap.height);
+  const sourceX = Math.floor((bitmap.width - sourceSize) / 2);
+  const sourceY = Math.floor((bitmap.height - sourceSize) / 2);
+
+  context.drawImage(bitmap, sourceX, sourceY, sourceSize, sourceSize, 0, 0, pixelSize, pixelSize);
   bitmap.close();
 
   return canvas;
@@ -119,7 +161,7 @@ function toBrowserQrError(error: unknown): BrowserQrError {
   if (error instanceof Error) {
     return {
       code: "qr_generation_failed",
-      message: `QR コードの生成に失敗しました: ${error.message}`,
+      message: "QR コードの生成に失敗しました: " + error.message,
     };
   }
 

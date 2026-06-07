@@ -1,5 +1,5 @@
-const MIN_PIXEL_SIZE = 1;
-const MAX_PIXEL_SIZE = 64;
+const MIN_PIXEL_SIZE = 12;
+const MAX_PIXEL_SIZE = 32;
 
 export function validateClientInputs(url: string, image: File | null, pixelSize: number): string[] {
   const errors: string[] = [];
