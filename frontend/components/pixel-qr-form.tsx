@@ -99,13 +99,13 @@ export function PixelQrForm() {
   }
 
   return (
-    <section className="grid flex-1 gap-6 py-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(380px,1fr)]">
+    <section className="grid flex-1 gap-3 py-3 lg:grid-cols-[minmax(0,0.9fr)_minmax(320px,1fr)]">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-5 border border-[#d7cfc1] bg-white p-5 shadow-sm"
+        className="flex flex-col gap-2 border border-[#e5e5e5] bg-white p-3 shadow-sm sm:p-4"
       >
-        <div className="flex flex-col gap-2">
-          <label htmlFor="url" className="text-sm font-semibold text-[#2b2925]">
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="url" className="text-xs font-semibold text-[#111111]">
             URL
           </label>
           <input
@@ -117,12 +117,12 @@ export function PixelQrForm() {
               setQrBlob(null);
             }}
             placeholder="https://example.com"
-            className="min-h-12 border border-[#bfb5a6] px-3 outline-none transition focus:border-[#2d6a63] focus:ring-2 focus:ring-[#2d6a63]/20"
+            className="min-h-10 border border-[#d4d4d4] px-2.5 text-sm outline-none transition focus:border-[#111111] focus:ring-2 focus:ring-[#111111]/10"
           />
         </div>
 
-        <div className="flex flex-col gap-3">
-          <label htmlFor="image" className="text-sm font-semibold text-[#2b2925]">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="image" className="text-xs font-semibold text-[#111111]">
             ドット絵 PNG
           </label>
           <input
@@ -130,10 +130,10 @@ export function PixelQrForm() {
             type="file"
             accept="image/png"
             onChange={handleImageChange}
-            className="block w-full cursor-pointer border border-dashed border-[#bfb5a6] bg-[#fbfaf7] p-4 text-sm file:mr-4 file:border-0 file:bg-[#2d6a63] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
+            className="block w-full cursor-pointer border border-dashed border-[#d4d4d4] bg-white p-3 text-xs file:mr-3 file:border-0 file:bg-[#111111] file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white"
           />
-          <div className="grid gap-3 sm:grid-cols-[96px_1fr] sm:items-center">
-            <div className="grid aspect-square w-24 place-items-center border border-[#d7cfc1] bg-[#fbfaf7]">
+          <div className="grid grid-cols-[72px_1fr] items-center gap-2">
+            <div className="grid aspect-square w-[72px] place-items-center border border-[#e5e5e5] bg-white">
               {selectedImage ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -142,15 +142,15 @@ export function PixelQrForm() {
                   className="pixelated max-h-full max-w-full"
                 />
               ) : (
-                <span className="text-xs text-[#777066]">PNG</span>
+                <span className="text-xs text-[#737373]">PNG</span>
               )}
             </div>
-            <p className="text-sm leading-6 text-[#5d574f]">{imageSummary}</p>
+            <p className="text-xs leading-5 text-[#525252]">{imageSummary}</p>
           </div>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label htmlFor="pixel-size" className="text-sm font-semibold text-[#2b2925]">
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="pixel-size" className="text-xs font-semibold text-[#111111]">
             一辺のピクセル数
           </label>
           <input
@@ -164,15 +164,15 @@ export function PixelQrForm() {
               setPixelSize(event.target.valueAsNumber);
               setQrBlob(null);
             }}
-            className="min-h-12 border border-[#bfb5a6] px-3 outline-none transition focus:border-[#2d6a63] focus:ring-2 focus:ring-[#2d6a63]/20"
+            className="min-h-10 border border-[#d4d4d4] px-2.5 text-sm outline-none transition focus:border-[#111111] focus:ring-2 focus:ring-[#111111]/10"
           />
-          <p className="text-sm leading-6 text-[#5d574f]">
+          <p className="text-xs leading-5 text-[#525252]">
             アップロード画像全体を指定サイズに最近傍でリサイズします。
           </p>
         </div>
 
         {(inputErrors.length > 0 || apiError) && (
-          <div className="border border-[#d46a52] bg-[#fff4ef] p-3 text-sm leading-6 text-[#8d2b1c]">
+          <div className="border border-[#fdba74] bg-[#fff7ed] p-2 text-xs leading-5 text-[#9a3412]">
             {inputErrors.map((error) => (
               <p key={error}>{error}</p>
             ))}
@@ -183,7 +183,7 @@ export function PixelQrForm() {
         <button
           type="submit"
           disabled={isGenerating}
-          className="min-h-12 bg-[#2d6a63] px-5 font-semibold text-white transition hover:bg-[#24564f] disabled:cursor-not-allowed disabled:bg-[#9fb8b3]"
+          className="min-h-10 bg-[#111111] px-4 text-sm font-semibold text-white transition hover:bg-[#333333] disabled:cursor-not-allowed disabled:bg-[#c7c7c7]"
         >
           {isGenerating ? "生成中..." : "QR コードを生成"}
         </button>

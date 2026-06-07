@@ -6,29 +6,29 @@ type QrPreviewProps = {
 
 export function QrPreview({ previewUrl, isGenerating, onDownload }: QrPreviewProps) {
   return (
-    <section className="flex min-h-[520px] flex-col border border-[#d7cfc1] bg-[#fbfaf7]">
-      <div className="flex items-center justify-between border-b border-[#d7cfc1] px-5 py-4">
-        <h2 className="text-base font-bold">プレビュー</h2>
+    <section className="flex min-h-[340px] flex-col sm:min-h-[460px] border border-[#e5e5e5] bg-white">
+      <div className="flex items-center justify-between border-b border-[#e5e5e5] px-3 py-2.5">
+        <h2 className="text-sm font-bold">プレビュー</h2>
         <button
           type="button"
           onClick={onDownload}
           disabled={!previewUrl || isGenerating}
-          className="min-h-10 bg-[#2b2925] px-4 text-sm font-semibold text-white transition hover:bg-[#11100f] disabled:cursor-not-allowed disabled:bg-[#b8b1a8]"
+          className="min-h-9 bg-[#111111] px-3 text-xs font-semibold text-white transition hover:bg-[#333333] disabled:cursor-not-allowed disabled:bg-[#c7c7c7]"
         >
           PNG ダウンロード
         </button>
       </div>
 
-      <div className="grid flex-1 place-items-center p-5">
+      <div className="grid flex-1 place-items-center p-3">
         {previewUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={previewUrl}
             alt="生成された Pixel QR"
-            className="pixelated aspect-square w-full max-w-[520px] border border-[#d7cfc1] bg-white"
+            className="pixelated aspect-square w-full max-w-[360px] sm:max-w-[520px] border border-[#e5e5e5] bg-white"
           />
         ) : (
-          <div className="grid aspect-square w-full max-w-[520px] place-items-center border border-dashed border-[#bfb5a6] bg-white text-center text-sm leading-6 text-[#777066]">
+          <div className="grid aspect-square w-full max-w-[360px] sm:max-w-[520px] place-items-center border border-dashed border-[#d4d4d4] bg-white text-center text-xs leading-5 text-[#737373]">
             {isGenerating ? "生成しています..." : "生成結果がここに表示されます"}
           </div>
         )}

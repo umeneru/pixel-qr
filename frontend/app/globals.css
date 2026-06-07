@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "BestTen CRT";
+  src: url("/fonts/BestTen-CRT.otf") format("opentype");
+  font-display: swap;
+}
+
 :root {
   color-scheme: light;
 }
@@ -10,7 +16,9 @@
 
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: #111111;
+  font-family: "BestTen CRT", Arial, Helvetica, sans-serif;
 }
 
 button,
