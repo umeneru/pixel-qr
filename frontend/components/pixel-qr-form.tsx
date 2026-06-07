@@ -2,7 +2,7 @@
 
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 
-import { createPixelQr, type ApiError } from "@/lib/api";
+import { createPixelQrInBrowser, type BrowserQrError } from "@/lib/browser-qr";
 import { downloadBlob } from "@/lib/download";
 import { validateClientInputs } from "@/lib/validation";
 import { QrPreview } from "@/components/qr-preview";
@@ -17,7 +17,7 @@ export function PixelQrForm() {
   const [pixelSize, setPixelSize] = useState(32);
   const [selectedImage, setSelectedImage] = useState<SelectedImage | null>(null);
   const [inputErrors, setInputErrors] = useState<string[]>([]);
-  const [apiError, setApiError] = useState<ApiError | null>(null);
+  const [apiError, setApiError] = useState<BrowserQrError | null>(null);
   const [qrBlob, setQrBlob] = useState<Blob | null>(null);
   const [qrPreviewUrl, setQrPreviewUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -83,10 +83,10 @@ export function PixelQrForm() {
 
     setIsGenerating(true);
     try {
-      const blob = await createPixelQr({ url, image: selectedImage.file, pixelSize });
+      const blob = await createPixelQrInBrowser({ url, image: selectedImage.file, pixelSize });
       setQrBlob(blob);
     } catch (error) {
-      setApiError(error as ApiError);
+      setApiError(error as BrowserQrError);
     } finally {
       setIsGenerating(false);
     }
