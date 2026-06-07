@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { PixelQrForm } from "@/components/pixel-qr-form";
 
 export default function Home() {
@@ -7,9 +9,18 @@ export default function Home() {
         <header className="pb-3">
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0">
-              <h1 className="pixel-title text-[2rem] font-black leading-none text-[#5948dd] sm:text-[2.65rem]">
-                Pixel QR
-              </h1>
+              <div className="flex items-center gap-3">
+                <Image
+                  src="/images/logo.png"
+                  alt=""
+                  width={48}
+                  height={48}
+                  className="hidden size-10 shrink-0 object-contain sm:block sm:size-12"
+                />
+                <h1 className="pixel-title text-[2rem] font-black leading-none text-[#5948dd] sm:text-[2.65rem]">
+                  Pixel QR
+                </h1>
+              </div>
               <p className="mt-2 text-sm font-semibold text-[#6a6f84] sm:text-base">
                 ドット絵を埋め込んだQRコードを作成
               </p>
