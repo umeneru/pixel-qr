@@ -189,12 +189,12 @@ export function PixelQrForm() {
   }
 
   return (
-    <section className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[minmax(360px,0.83fr)_minmax(440px,1.17fr)]">
+    <section className="grid min-h-0 flex-1 gap-3 lg:grid-cols-[minmax(360px,0.83fr)_minmax(440px,1.17fr)]">
       <form
         onSubmit={handleSubmit}
-        className="flex min-h-0 flex-col gap-4 rounded-lg bg-white p-5 shadow-[0_10px_30px_rgba(74,85,130,0.07)]"
+        className="flex min-h-0 flex-col gap-3 rounded-lg bg-white p-4 shadow-[0_10px_30px_rgba(74,85,130,0.07)]"
       >
-        <div className="space-y-3 border-b border-[#e7e9f2] pb-5">
+        <div className="space-y-2 border-b border-[#e7e9f2] pb-3">
           <label htmlFor="url" className="flex items-center gap-2 text-xl font-black text-[#5948dd]">
             1. URLを入力
           </label>
@@ -214,12 +214,12 @@ export function PixelQrForm() {
           </p>
         </div>
 
-        <div className="space-y-4 border-b border-[#e7e9f2] pb-5">
+        <div className="space-y-3 border-b border-[#e7e9f2] pb-3">
           <h2 className="flex items-center gap-2 text-xl font-black text-[#5948dd]">
             2. ドット絵画像をアップロード
           </h2>
 
-          <div className="grid gap-5 md:grid-cols-[1fr_200px] md:items-start">
+          <div className="grid gap-4 md:grid-cols-[1fr_200px] md:items-start">
             <input
               ref={fileInputRef}
               id="image"
@@ -230,17 +230,28 @@ export function PixelQrForm() {
             />
 
             {selectedImage ? (
-              <div className="relative min-h-[152px] overflow-hidden rounded-md border border-[#d7dbe8] bg-[linear-gradient(45deg,#f1f3f8_25%,transparent_25%),linear-gradient(-45deg,#f1f3f8_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#f1f3f8_75%),linear-gradient(-45deg,transparent_75%,#f1f3f8_75%)] bg-[length:20px_20px] bg-[position:0_0,0_10px,10px_-10px,-10px_0]">
+              <div className="relative min-h-[132px] overflow-hidden rounded-md border border-[#d7dbe8] bg-[linear-gradient(45deg,#f1f3f8_25%,transparent_25%),linear-gradient(-45deg,#f1f3f8_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#f1f3f8_75%),linear-gradient(-45deg,transparent_75%,#f1f3f8_75%)] bg-[length:20px_20px] bg-[position:0_0,0_10px,10px_-10px,-10px_0]">
                 <button
                   type="button"
                   onClick={handleImageClear}
                   aria-label="選択した画像を削除"
-                  className="absolute right-2 top-2 z-10 grid size-9 place-items-center rounded-full border border-[#d3d8e6] bg-white pl-0.5 text-[#4f566b] shadow-[0_4px_12px_rgba(31,36,67,0.14)] transition hover:border-[#6655f1] hover:text-[#5948dd]"
+                  className="absolute right-2 top-2 z-10 grid size-8 place-items-center text-[#4f566b] transition hover:text-[#5948dd]"
                 >
-                  <span aria-hidden="true"> ×</span>
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    className="size-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={3}
+                  >
+                    <path d="M6 6l12 12M18 6 6 18" />
+                  </svg>
                 </button>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={selectedImage.previewUrl} alt="選択したPNG画像" className="h-[152px] w-full object-contain p-4" />
+                <img src={selectedImage.previewUrl} alt="選択したPNG画像" className="h-[132px] w-full object-contain p-4" />
                 <p className="border-t border-[#dfe3ee] bg-white/90 px-3 py-2 text-sm font-semibold text-[#666d84]">
                   {imageSummary}
                 </p>
@@ -248,7 +259,7 @@ export function PixelQrForm() {
             ) : (
               <label
                 htmlFor="image"
-                className="grid min-h-[152px] cursor-pointer place-items-center rounded-md border border-dashed border-[#8d7dff] bg-[#fbfaff] px-6 py-5 text-center transition hover:border-[#5f4df2] hover:bg-[#f6f3ff]"
+                className="grid min-h-[132px] cursor-pointer place-items-center rounded-md border border-dashed border-[#8d7dff] bg-[#fbfaff] px-6 py-5 text-center transition hover:border-[#5f4df2] hover:bg-[#f6f3ff]"
               >
                 <span className="flex flex-col items-center gap-2">
                   <span className="text-lg font-black text-[#5a49df]">PNG画像を選択</span>
@@ -288,7 +299,7 @@ export function PixelQrForm() {
           </div>
         </div>
 
-        <div className="space-y-3 border-b border-[#e7e9f2] pb-5">
+        <div className="space-y-2 border-b border-[#e7e9f2] pb-3">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="text-sm font-black text-[#62687b]">リサイズ後のプレビュー</p>
             <div className="inline-flex items-center gap-2 rounded-full border border-[#dfe3ee] bg-white p-0.5 text-xs font-black text-[#62687b]">
@@ -314,7 +325,7 @@ export function PixelQrForm() {
               </div>
             </div>
           </div>
-          <div className="grid aspect-square w-full max-w-80 place-items-center rounded-md border border-[#edf0f6] bg-[linear-gradient(45deg,#eef1f7_25%,transparent_25%),linear-gradient(-45deg,#eef1f7_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#eef1f7_75%),linear-gradient(-45deg,transparent_75%,#eef1f7_75%)] bg-[length:16px_16px] bg-[position:0_0,0_8px,8px_-8px,-8px_0] shadow-sm">
+          <div className="grid aspect-square w-full max-w-64 place-items-center rounded-md border border-[#edf0f6] bg-[linear-gradient(45deg,#eef1f7_25%,transparent_25%),linear-gradient(-45deg,#eef1f7_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#eef1f7_75%),linear-gradient(-45deg,transparent_75%,#eef1f7_75%)] bg-[length:16px_16px] bg-[position:0_0,0_8px,8px_-8px,-8px_0] shadow-sm">
             {resizedPreviewUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={resizedPreviewUrl} alt="正方形に切り取ってリサイズした画像" className="pixelated h-full w-full object-contain" />
@@ -328,7 +339,7 @@ export function PixelQrForm() {
         <button
           type="submit"
           disabled={isGenerating}
-          className="mt-auto min-h-16 rounded-md bg-[#624de7] px-5 text-xl font-black text-white shadow-[0_12px_25px_rgba(98,77,231,0.24)] transition hover:bg-[#5140d4] disabled:cursor-not-allowed disabled:bg-[#b8bdd0]"
+          className="mt-auto min-h-14 rounded-md bg-[#624de7] px-5 text-xl font-black text-white shadow-[0_12px_25px_rgba(98,77,231,0.24)] transition hover:bg-[#5140d4] disabled:cursor-not-allowed disabled:bg-[#b8bdd0]"
         >
           3. QRコードを生成
         </button>

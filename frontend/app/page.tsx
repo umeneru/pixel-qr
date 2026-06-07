@@ -3,8 +3,8 @@ import { PixelQrForm } from "@/components/pixel-qr-form";
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#fbfbff] text-[#161827]">
-      <div className="mx-auto flex min-h-screen w-full max-w-[1490px] flex-col px-4 py-4 sm:px-8 lg:px-10">
-        <header className="pb-4">
+      <div className="mx-auto flex min-h-screen w-full max-w-[1490px] flex-col px-4 py-3 sm:px-8 lg:px-10">
+        <header className="pb-3">
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0">
               <h1 className="pixel-title text-[2rem] font-black leading-none text-[#5948dd] sm:text-[2.65rem]">
