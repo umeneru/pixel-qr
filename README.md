@@ -30,6 +30,12 @@ task install
 task dev
 ```
 
+本番ビルド後にサーバーを起動します。
+
+```bash
+task start
+```
+
 起動後、ブラウザで以下を開きます。
 
 ```text
