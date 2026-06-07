@@ -16,6 +16,11 @@ tasks:
     deps:
       - frontend:dev
 
+  start:
+    desc: Build and run the frontend production server
+    deps:
+      - frontend:start
+
   check:
     desc: Run frontend lint, typecheck, and build
     deps:
@@ -32,6 +37,13 @@ tasks:
     dir: frontend
     cmds:
       - npm run dev -- -p 4000 -H 0.0.0.0
+
+  frontend:start:
+    desc: Build and run Next.js production server on port 4000
+    dir: frontend
+    cmds:
+      - npm run build
+      - npm exec next start -- -p 4000 -H 0.0.0.0
 
   frontend:check:
     desc: Run frontend lint, typecheck, and build
