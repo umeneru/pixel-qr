@@ -6,7 +6,7 @@ type QrPreviewProps = {
 
 export function QrPreview({ previewUrl, isGenerating, onDownload }: QrPreviewProps) {
   return (
-    <section className="flex min-h-[520px] flex-col gap-5 rounded-lg border border-[#e6e8f2] bg-white p-6 shadow-[0_10px_30px_rgba(74,85,130,0.07)]">
+    <section className="flex min-h-[520px] flex-col gap-5 rounded-lg bg-white p-6 shadow-[0_10px_30px_rgba(74,85,130,0.07)]">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="flex items-center gap-2 text-xl font-black text-[#5948dd]">
           プレビュー

@@ -101,10 +101,10 @@ export function PixelQrForm() {
   }
 
   return (
-    <section className="grid flex-1 gap-4 rounded-xl border border-[#e5e8f1] bg-white/70 p-2 shadow-[0_18px_50px_rgba(31,36,67,0.08)] lg:grid-cols-[minmax(360px,0.83fr)_minmax(440px,1.17fr)]">
+    <section className="grid flex-1 gap-4 lg:grid-cols-[minmax(360px,0.83fr)_minmax(440px,1.17fr)]">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-5 rounded-lg border border-[#e6e8f2] bg-white p-6 shadow-[0_10px_30px_rgba(74,85,130,0.07)]"
+        className="flex flex-col gap-5 rounded-lg bg-white p-6 shadow-[0_10px_30px_rgba(74,85,130,0.07)]"
       >
         <div className="space-y-3 border-b border-[#e7e9f2] pb-5">
           <label htmlFor="url" className="flex items-center gap-2 text-xl font-black text-[#5948dd]">
